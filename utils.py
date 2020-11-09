@@ -13,8 +13,9 @@ class Npuzzle:
 	def __init__(self, size, content):
 		self.size = size
 		self.content = content
+
 	def __str__(self):
-		return 'N-Puzzle\nSize: %d\n\nContent:%s' % (self.size, self.content)
+		return 'N-Puzzle\nSize: %d\nContent: %s' % (self.size, self.content)
 
 def parse_option():
 	parser = ArgumentParser()
@@ -36,9 +37,7 @@ def parse():
 		elif not first_line and match(r'^(\d+[ \t\n]*){4}$', elt):
 			content += rsplit(r'[ \t\n]+', elt)
 		else:
-			print(size)
-			print('|%s|' % elt)
 			errno('bad file', elt)
-	print(content)
-	npuzzle = Npuzzle(size, content)
-	return npuzzle
+	if size*size != len(content):
+		errno('bad file', elt)
+	return Npuzzle(size, content)

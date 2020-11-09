@@ -4,5 +4,5 @@ from utils import parse
 
 if __name__ == "__main__":
 	npuzzle = parse()
-	# print(npuzzle, end="")
+	print(npuzzle)
 	exit(0)
