@@ -14,7 +14,7 @@ below). While there will be no direct evaluation of its performance in this inst
 project, it has to have at least a vaguely reasonable perfomance : Taking a few second to
 solve a 3-puzzle is pushing it, ten seconds is unacceptable.  
   
-<img src="./.images/tmp.png">
+<img src="./.images/N-puzzle_exemple.png">
   
 The only move one can do in the N-puzzle is to swap the empty cell with one of its
 neighbors (No diagonals, of course. Imagine you’re sliding a block with a number on it
