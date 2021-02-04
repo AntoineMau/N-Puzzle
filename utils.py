@@ -8,15 +8,6 @@ def errno(error, detail = None):
 	print(msg_error[error])
 	exit(1)
 
-
-class Npuzzle:
-	def __init__(self, size, content):
-		self.size = size
-		self.content = content
-
-	def __str__(self):
-		return 'N-Puzzle\nSize: %d\nContent: %s' % (self.size, self.content)
-
 def parse_option():
 	parser = ArgumentParser()
 	parser.add_argument('file', type=FileType('r'), help='N-puzzle file')
@@ -34,10 +25,10 @@ def parse():
 		elif first_line and match(r'^\d+$', elt):
 			size = int(elt)
 			first_line = False
-		elif not first_line and match(r'^(\d+[ \t\n]*){4}$', elt):
-			content += rsplit(r'[ \t\n]+', elt)
+		elif not first_line and match(r'^([ \t]*\d+[ \t]*){%d}$' % size, elt):
+			content += rsplit(r'[ \t\n]+', elt.strip())
 		else:
 			errno('bad file', elt)
 	if size*size != len(content):
 		errno('bad file', elt)
-	return Npuzzle(size, content)
+	return size, content
