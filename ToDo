@@ -1,0 +1,41 @@
+1/ entre:
+	file:
+	# this is a comment
+	3$
+	3 2 6 #another comment$
+	1 4 0$
+	8 7 5$
+
+	*0 est l'absence de nombre, le trou dans la grille*
+
+2/ nettoyage de l'entré
+	del comment
+	check les inputs -> que des nombres, des espaces et des tabs
+
+3/ stock les inputs dans la/les structures
+
+4/ check if puzzle can be solved (ne sais pas si on peut le faire avant l'algo)
+
+5/ commencer la résolution du puzzle grace a l'algo A*
+	- deux listes
+		opened: States to be examined and candidates to expansion
+		closed: States already selected by the algorithm, campared to the solution, and expanded
+	- booléen succes départ a false
+	- tant que opened n'est pas vide et succes est false:
+		- prendre l'element le plus accurate de opened
+		- si l'element est al solution final:
+			- succes = true
+		- sinon:
+			enlever l'element de opened
+			l'ajouter a closed
+			- liste de tout les elements découlant de l'element:
+				- si il n'appartient ni a opened, ni a closed
+					- alors l'ajouter a opened
+				- sinon voir le plus rapide e l'echanger si necessaire
+
+6/ sortie:
+	- total number of states ever selected in the "opened" set (complexity in time)
+	- Maximum number of states ever reesented in memory at the same time during the search (complexity in size)
+	- Number of moves required to transition from the initial state to the final state according to the search
+	- the ordered sequence of states that make up the solution, acccording to the search
+	- the puzzle may be unsolvable, in which case you have to inforl the user and exit
