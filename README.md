@@ -28,4 +28,4 @@ towards an empty space).
 ## More info
 **Autor:** [Antoine Mauffret](https://github.com/AntoineMau)  
   
-**Suject:** [N-puzzle](https://cdn.intra.42.fr/pdf/pdf/2024/npuzzle.en.pdf)
+**subject:** [N-puzzle](https://cdn.intra.42.fr/pdf/pdf/2024/npuzzle.en.pdf)
