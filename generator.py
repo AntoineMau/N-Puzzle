@@ -1,6 +1,6 @@
-from argparse import ArgumentParser
+from utils import is_solvable
 from random import shuffle
-from utils import swap, is_solvable
+from argparse import ArgumentParser
 
 def parse():
 	parser = ArgumentParser()

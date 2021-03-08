@@ -1,35 +1,9 @@
 #!/usr/bin/python3
 
-from utils import *
-import time
-
-class Npuzzle:
-	def __init__(self, size, content, cost, parent, heuri):
-		self.size = size
-		self.cost = cost
-		self.heuri = heuri
-		self.parent = parent
-		self.content = content
-
-	def __str__(self):
-		return 'N-Puzzle\nSize: %d\nContent: %s' % (self.size, self.content)
-
-	def pprint(self):
-		print('Cost: %d | Heuri: %d | C + H: %d' % (self.cost, self.heuri, self.cost+self.heuri))
-		for i in range(len(self.content)):
-			print('%s' % self.content[i], end='')
-			print(' ', end='') if i%self.size != self.size-1 else print('')
-
-class Queue:
-	def __init__(self, npuzzle_start):
-		self.closed = []
-		self.opened = [npuzzle_start]
-
-def p_matrice(content, size):
-	for i in range(len(content)):
-		print('%s' % content[i], end='')
-		print(' ', end='') if i%size != size-1 else print('')
-	print()
+from time import time
+from parse import parse
+from utils import swap, errno, is_solvable
+from all_class import Npuzzle, Queue, Algorithm
 
 def expand(size, content):
 	index = content.index('0')
@@ -44,10 +18,9 @@ def expand(size, content):
 		l.append(swap(content.copy(), index, index+1))
 	return l
 
-def process(npuzzle):
+def process(npuzzle, queue, algo):
 	if not is_solvable(npuzzle.content.copy(), npuzzle.size):
 		errno('unsolvable')
-	queue = Queue(npuzzle)
 	finish = [str(i) for i in range(npuzzle.size ** 2)]
 	while queue.opened:
 		e = queue.opened[0]
@@ -60,7 +33,7 @@ def process(npuzzle):
 				open_content = [elt.content for elt in queue.opened]
 				close_content = [elt.content for elt in queue.closed]
 				if s not in open_content and s not in close_content:
-					queue.opened.append(Npuzzle(e.size, s, e.cost+1, e, exec_heuri(s, e.size)))
+					queue.opened.append(Npuzzle(e.size, s, e.cost+1, e, algo.exec_algo(s, e.size)))
 					queue.opened.sort(key=lambda x: x.cost+x.heuri)
 				else:
 					if s in open_content:
@@ -78,21 +51,23 @@ def process(npuzzle):
 							queue.opened.sort(key=lambda x: x.cost+x.heuri)
 	return e
 
-def print_finish(elem):
+def print_all_step(elem):
 	if elem.parent:
-		print_finish(elem.parent)
+		print_all_step(elem.parent)
 	print()
-	for i in range(len(elem.content)):
-		print('%s' % elem.content[i], end='')
-		print(' ', end='') if i%elem.size != elem.size-1 else print('')
+	elem.p_matrice()
+
+def print_finish(elem, queue, start_time):
+	print_all_step(elem)
+	print('step: %d' % elem.cost)
+	print('number of elem past by opened: %d' % (len(queue.closed) + len(queue.opened)))
+	print("--- %s seconds ---" % (time() - start_time))
 
 if __name__ == "__main__":
-	start_time = time.time()
-
-	npuzzle = Npuzzle(*parse())
-	e = process(npuzzle)
-	print_finish(e)
-	print('step: %d' % e.cost)
-
-	print("--- %s seconds ---" % (time.time() - start_time))
+	start_time = time()
+	algo = Algorithm()
+	npuzzle = Npuzzle(*parse(algo))
+	queue = Queue(npuzzle)
+	e = process(npuzzle, queue, algo)
+	print_finish(e, queue, start_time)
 	exit(0)

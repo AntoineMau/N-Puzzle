@@ -1,4 +1,8 @@
 # N-Puzzle
+## Table of Contents
+* [Introduction](#introduction)
+* [Usage](#usage)
+* [More info](#more-info)
   
 ## Introduction
 The goal of this project is to solve the N-puzzle ("taquin" in French) game using the A*
@@ -19,3 +23,9 @@ solve a 3-puzzle is pushing it, ten seconds is unacceptable.
 The only move one can do in the N-puzzle is to swap the empty cell with one of its
 neighbors (No diagonals, of course. Imagine you’re sliding a block with a number on it
 towards an empty space).  
+  
+## Usage
+## More info
+**Autor:** [Antoine Mauffret](https://github.com/AntoineMau)  
+  
+**Suject:** [N-puzzle](https://cdn.intra.42.fr/pdf/pdf/2024/npuzzle.en.pdf)
