@@ -58,7 +58,6 @@ class Algorithm:
 	# euclidian distance
 	def euclidian(self, content, size):
 		heuri = 0
-		weight = 2
 		for i in range(size ** 2):
 			sta = content.index(str(i))
 			objX, objY = int(i/size), int(i%size)

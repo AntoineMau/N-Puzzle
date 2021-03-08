@@ -19,3 +19,13 @@ def is_solvable(npuzzle, size):
 			swap(npuzzle, i, npuzzle.index(str(i)))
 			permutation += 1
 	return permutation%2 == parity0
+
+def place_it(opened, s):
+	insert = False
+	for i, elt in enumerate(opened):
+		if elt.heuri + elt.cost >= s.heuri + s.cost:
+			opened.insert(i, s)
+			insert = True
+			break
+	if not insert:
+		opened.append(s)

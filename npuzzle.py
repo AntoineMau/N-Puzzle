@@ -2,7 +2,7 @@
 
 from time import time
 from parse import parse
-from utils import swap, errno, is_solvable
+from utils import swap, errno, is_solvable, place_it
 from all_class import Npuzzle, Queue, Algorithm
 
 def expand(size, content):
@@ -33,8 +33,7 @@ def process(npuzzle, queue, algo):
 				open_content = [elt.content for elt in queue.opened]
 				close_content = [elt.content for elt in queue.closed]
 				if s not in open_content and s not in close_content:
-					queue.opened.append(Npuzzle(e.size, s, e.cost+1, e, algo.exec_algo(s, e.size)))
-					queue.opened.sort(key=lambda x: x.cost+x.heuri)
+					place_it(queue.opened, Npuzzle(e.size, s, e.cost+1, e, algo.exec_algo(s, e.size)))
 				else:
 					if s in open_content:
 						closed = False
@@ -47,8 +46,7 @@ def process(npuzzle, queue, algo):
 						s.parent = e
 						if closed:
 							queue.closed.remove(s)
-							queue.opened.append(s)
-							queue.opened.sort(key=lambda x: x.cost+x.heuri)
+							place_it(queue.opened, s)
 	return e
 
 def print_all_step(elem):
