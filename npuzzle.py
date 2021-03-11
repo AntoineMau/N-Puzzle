@@ -7,27 +7,23 @@ class Npuzzle:
 		self.content = content
 
 	def next_move(self, size):
-		content = self.content.copy()
-		index = content.index(0)
-		l = []
-		length = 0
-		if int(index/size) != 0:
-			l.append(self.swap(content.copy(), index, index-size))
-			length += 1
-		if int(index/size) != size-1:
-			l.append(self.swap(content.copy(), index, index+size))
-			length += 1
-		if index%size != 0:
-			l.append(self.swap(content.copy(), index, index-1))
-			length += 1
-		if index%size != size-1:
-			l.append(self.swap(content.copy(), index, index+1))
-			length += 1
-		return length, l
+		index = self.content.index(0)
+		l = list()
+		col, line = index%size, int(index/size)
+		if line != 0:
+			l.append(self.swap(index, index-size))
+		if line != size-1:
+			l.append(self.swap(index, index+size))
+		if col != 0:
+			l.append(self.swap(index, index-1))
+		if col != size-1:
+			l.append(self.swap(index, index+1))
+		return len(l), l
 
-	def swap(self, content, i1, i2):
-		content[i1], content[i2] = content[i2], content[i1]
-		return content
+	def swap(self, i1, i2):
+		lcontent = list(self.content)
+		lcontent[i1], lcontent[i2] = lcontent[i2], lcontent[i1]
+		return tuple(lcontent)
 
 	def get_path(self):
 		path = list()
