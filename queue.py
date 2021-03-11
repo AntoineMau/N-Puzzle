@@ -13,7 +13,7 @@ class Queue:
 		self.opened_hash = dict()
 		self.closed = set()
 		if setting.start == setting.goal:
-			self.solution = self.opened.pop(0)
+			self.solution = self.opened.pop()
 		else:
 			self.solution = self.solve(setting)
 
@@ -42,7 +42,7 @@ class Queue:
 				else:
 					self.opened.push(s)
 					self.opened_hash[s.content] = s
-		return (None)
+		return None
 
 	def final(self):
 		if self.solution:
@@ -71,4 +71,4 @@ class OpenedQueue:
 		self.id += 1
 
 	def pop(self):
-		return (heapq.heappop(self.pq)[2])
+		return heapq.heappop(self.pq)[2]

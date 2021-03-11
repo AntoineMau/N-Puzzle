@@ -1,13 +1,12 @@
 from re import match, sub, split as rsplit
 from utils import error
 from argparse import ArgumentParser, FileType
-from heuristic import hamming, relaxed_adjacency, manhattan, linear_conflict
+from heuristic import hamming, manhattan
 
 class Setting:
 	def __init__(self):
 		self.algorithm = str()
 		self.heuristic = str()
-		self.file = str()
 		self.start = tuple()
 		self.size = int()
 		self.goal = tuple()
@@ -21,11 +20,10 @@ class Setting:
 
 	def parser(self):
 		parser = ArgumentParser()
-		parser.add_argument('-f', '--file', type=FileType('r'), help='N-puzzle file')
-		parser.add_argument('-a', '--algorithm', default='astar', choices=['astar', 'greedy', 'uniform'], help='Choise algorithm for N-puzzle.')
-		parser.add_argument('-H', '--heuristic', default='linear', choices=['hamming', 'relaxed', 'manhattan', 'linear'], help='Choise heuristic for N-puzzle.')
+		parser.add_argument('-F', '--file', type=FileType('r'), help='N-puzzle file')
+		parser.add_argument('-A', '--algorithm', default='astar', choices=['astar', 'greedy', 'uniform'], help='Choise algorithm for N-puzzle.')
+		parser.add_argument('-H', '--heuristic', default='manhattan', choices=['hamming', 'manhattan'], help='Choise heuristic for N-puzzle.')
 		args = parser.parse_args()
-		self.file = args.file
 		self.algorithm = args.algorithm
 		self.heuristic = args.heuristic
 		f = args.file.read()
@@ -76,9 +74,7 @@ class Setting:
 	def choose_heuristic_f(self):
 		f = {
 			'hamming': (hamming),
-			'relaxed': (relaxed_adjacency),
 			'manhattan': (manhattan),
-			'linear': (linear_conflict)
 		}
 		return f[self.heuristic]
 
