@@ -1,16 +1,10 @@
 class Npuzzle:
-	def __init__(self, content, g, cost, h, parent):
-		self.h = h
-		self.cost = cost
+	def __init__(self, content, g, setting, parent):
 		self.g = g
+		self.h = setting.h(content, setting.goal, setting.size)
+		self.cost = setting.cost_f(g, content)
 		self.parent = parent
 		self.content = content
-	# def __init__(self, content, cost, parent, setting):
-	# 	self.h = setting.h(content, setting.goal, setting.size)
-	# 	self.g = setting.cost_f(cost, content)
-	# 	self.cost = cost
-	# 	self.parent = parent
-	# 	self.content = content
 
 	def next_move(self, size):
 		content = self.content.copy()

@@ -9,13 +9,13 @@ class Queue:
 		self.opened = list()
 		self.opened_hash = dict()
 		self.closed = set()
-		self.opened.append(Npuzzle(setting.start, 0, setting.cost_f(0, setting.start), setting.h(setting.start, setting.goal, self.size), None))
+		self.opened.append(Npuzzle(setting.start, 0, setting, None))
 		if setting.start == setting.goal:
 			self.solution = self.opened.pop(0)
 		else:
-			self.solution = self.solve(setting.cost_f, setting.h, setting.goal)
+			self.solution = self.solve(setting)
 
-	def solve(self, cost_f, h, goal):
+	def solve(self, setting):
 		while self.opened:
 			elt = self.opened.pop(0)
 			self.closed.add(elt)
@@ -25,12 +25,12 @@ class Queue:
 			if self.actual_size > self.complexity_size:
 				self.complexity_size = self.actual_size
 			for s in moves:
-				if s == goal:
-					return Npuzzle(s, elt.g + 1, cost_f(elt.g + 1, s), h(s, goal, self.size), elt)
+				if s == setting.goal:
+					return Npuzzle(s, elt.g + 1, setting, elt)
 				if tuple(s) in self.closed:
 					self.actual_size -= 1
 				elif tuple(s) in self.opened_hash:
-					s = Npuzzle(s, elt.g + 1, cost_f(elt.g + 1, s), h(s, goal, self.size), elt)
+					s = Npuzzle(s, elt.g + 1, setting, elt)
 					e = self.opened_hash[tuple(s.content)]
 					if s.g < e.g:
 						s.parent = e.parent
@@ -38,7 +38,7 @@ class Queue:
 						s.cost = e.cost
 					self.actual_size -= 1
 				else:
-					s = Npuzzle(s, elt.g + 1, cost_f(elt.g + 1, s), h(s, goal, self.size), elt)
+					s = Npuzzle(s, elt.g + 1, setting, elt)
 					self.insert_elt(s)
 					self.opened_hash[tuple(s.content)] = s
 		return (None)
