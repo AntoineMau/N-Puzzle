@@ -20,8 +20,7 @@ def make_puzzle(s, solvable, iterations):
 		p[idx] = p[swi]
 		p[swi] = 0
 	
-	# p = make_goal(s)
-	p = [i for i in range(s**2)]
+	p = make_goal(s)
 	for i in range(iterations):
 		swap_empty(p)
 	
@@ -34,8 +33,7 @@ def make_puzzle(s, solvable, iterations):
 	return p
 
 def make_goal(s):
-	ts = s*s
-	puzzle = [-1 for i in range(ts)]
+	puzzle = [-1 for i in range(s*s)]
 	cur = 1
 	x = 0
 	ix = 1
@@ -56,7 +54,6 @@ def make_goal(s):
 		y += iy
 		if cur == s*s:
 			cur = 0
-
 	return puzzle
 
 if __name__ == "__main__":

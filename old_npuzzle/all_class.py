@@ -18,9 +18,7 @@ class Npuzzle:
 
 	def pprint(self):
 		print('Cost: %d | Heuri: %d | C + H: %d' % (self.cost, self.heuri, self.cost+self.heuri))
-		for i in range(len(self.content)):
-			print('%s' % self.content[i], end='')
-			print(' ', end='') if i%self.size != self.size-1 else print('')
+		self.p_matrice()
 
 class Queue:
 	def __init__(self, npuzzle_start):
@@ -28,7 +26,8 @@ class Queue:
 		self.opened = [npuzzle_start]
 
 class Algorithm:
-	def __init__(self):
+	def __init__(self, goal):
+		self.goal = goal
 		self.algo = [self.manhattan, self.weighted, self.euclidian]
 
 	def set_algo(self, algo):
@@ -39,7 +38,8 @@ class Algorithm:
 		heuri = 0
 		for i in range(size ** 2):
 			sta = content.index(str(i))
-			objX, objY = int(i/size), int(i%size)
+			obj = self.goal.index(str(i))
+			objX, objY = int(obj/size), int(obj%size)
 			staX, staY = int(sta/size), int(sta%size)
 			heuri += abs(objX - staX) + abs(objY - staY)
 		return heuri
@@ -50,7 +50,8 @@ class Algorithm:
 		weight = 2
 		for i in range(size ** 2):
 			sta = content.index(str(i))
-			objX, objY = int(i/size), int(i%size)
+			obj = self.goal.index(str(i))
+			objX, objY = int(obj/size), int(obj%size)
 			staX, staY = int(sta/size), int(sta%size)
 			heuri += abs(objX - staX) + abs(objY - staY)
 		return heuri * weight
@@ -60,7 +61,8 @@ class Algorithm:
 		heuri = 0
 		for i in range(size ** 2):
 			sta = content.index(str(i))
-			objX, objY = int(i/size), int(i%size)
+			obj = self.goal.index(str(i))
+			objX, objY = int(obj/size), int(obj%size)
 			staX, staY = int(sta/size), int(sta%size)
 			heuri += round(sqrt((objX - staX)**2 + (objY - staY)**2))
 		return heuri
