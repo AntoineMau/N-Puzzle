@@ -1,7 +1,7 @@
 from re import match, sub, split as rsplit
 from utils import error
 from argparse import ArgumentParser, FileType
-from heuristic import hamming, manhattan
+from heuristic import manhattan, hamming, euclidean
 
 class Setting:
 	def __init__(self):
@@ -22,7 +22,7 @@ class Setting:
 		parser = ArgumentParser()
 		parser.add_argument('-F', '--file', type=FileType('r'), help='N-puzzle file')
 		parser.add_argument('-A', '--algorithm', default='astar', choices=['astar', 'greedy', 'uniform'], help='Choise algorithm for N-puzzle. Default: astar')
-		parser.add_argument('-H', '--heuristic', default='manhattan', choices=['manhattan', 'hamming'], help='Choise heuristic for N-puzzle. Default: manhattan')
+		parser.add_argument('-H', '--heuristic', default='manhattan', choices=['manhattan', 'hamming', 'euclidean'], help='Choise heuristic for N-puzzle. Default: manhattan')
 		args = parser.parse_args()
 		self.algorithm = args.algorithm
 		self.heuristic = args.heuristic
@@ -75,6 +75,7 @@ class Setting:
 		f = {
 			'hamming': (hamming),
 			'manhattan': (manhattan),
+			'euclidean': (euclidean)
 		}
 		return f[self.heuristic]
 

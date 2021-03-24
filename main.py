@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from queue import Queue
 from setting import Setting
 import time
