@@ -1,4 +1,4 @@
-# N-Puzzle
+# N-Puzzle [(subject)](https://cdn.intra.42.fr/pdf/pdf/2024/npuzzle.en.pdf)
 ## Table of Contents
 * [Introduction](#introduction)
 * [Usage](#usage)
