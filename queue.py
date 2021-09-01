@@ -1,6 +1,6 @@
 from utils import error, next_move
 from npuzzle import Npuzzle
-import heapq
+from heapq import heappush, heappop
 
 class Queue:
 	def __init__(self, setting):
@@ -66,8 +66,8 @@ class OpenedQueue:
 		self.id = 0
 
 	def push(self, s):
-		heapq.heappush(self.pq, (s.cost, self.id, s))
+		heappush(self.pq, (s.cost, self.id, s))
 		self.id += 1
 
 	def pop(self):
-		return heapq.heappop(self.pq)[2]
+		return heappop(self.pq)[2]

@@ -1,8 +1,6 @@
-#!/usr/bin/env python
-
-import sys
-import argparse
-import random
+from sys import exit
+from argparse import ArgumentParser
+from random import choice, seed
 
 def make_puzzle(s, solvable, iterations):
 	def swap_empty(p):
@@ -16,7 +14,7 @@ def make_puzzle(s, solvable, iterations):
 			poss.append(idx - s)
 		if idx / s < s - 1:
 			poss.append(idx + s)
-		swi = random.choice(poss)
+		swi = choice(poss)
 		p[idx] = p[swi]
 		p[swi] = 0
 	
@@ -58,28 +56,28 @@ def make_goal(s):
 
 	return puzzle
 
-if __name__ == "__main__":
-	parser = argparse.ArgumentParser()
+if __name__ == '__main__':
+	parser = ArgumentParser()
 
-	parser.add_argument("size", type=int, help="Size of the puzzle's side. Must be >3.")
-	parser.add_argument("-s", "--solvable", action="store_true", default=False, help="Forces generation of a solvable puzzle. Overrides -u.")
-	parser.add_argument("-u", "--unsolvable", action="store_true", default=False, help="Forces generation of an unsolvable puzzle")
-	parser.add_argument("-i", "--iterations", type=int, default=10000, help="Number of passes")
+	parser.add_argument('size', type=int, help='Size of the puzzle\'s side. Must be >3.')
+	parser.add_argument('-s', '--solvable', action='store_true', default=False, help='Forces generation of a solvable puzzle. Overrides -u.')
+	parser.add_argument('-u', '--unsolvable', action='store_true', default=False, help='Forces generation of an unsolvable puzzle')
+	parser.add_argument('-i', '--iterations', type=int, default=10000, help='Number of passes')
 
 	args = parser.parse_args()
 
-	random.seed()
+	seed()
 
 	if args.solvable and args.unsolvable:
-		print "Can't be both solvable AND unsolvable, dummy !"
-		sys.exit(1)
+		print('Can\'t be both solvable AND unsolvable, dummy !')
+		exit(1)
 
 	if args.size < 3:
-		print "Can't generate a puzzle with size lower than 2. It says so in the help. Dummy."
-		sys.exit(1)
+		print('Can\'t generate a puzzle with size lower than 2. It says so in the help. Dummy.')
+		exit(1)
 
 	if not args.solvable and not args.unsolvable:
-		solv = random.choice([True, False])
+		solv = choice([True, False])
 	elif args.solvable:
 		solv = True
 	elif args.unsolvable:
@@ -90,9 +88,9 @@ if __name__ == "__main__":
 	puzzle = make_puzzle(s, solvable=solv, iterations=args.iterations)
 
 	w = len(str(s*s))
-	print "# This puzzle is %s" % ("solvable" if solv else "unsolvable")
-	print "%d" % s
+	print('# This puzzle is %s' % ('solvable' if solv else 'unsolvable'))
+	print('%d' % s)
 	for y in range(s):
 		for x in range(s):
-			print "%s" % (str(puzzle[x + y*s]).rjust(w)),
-		print
+			print('%s' % (str(puzzle[x + y*s]).rjust(w)), end=' ')
+		print('')

@@ -1,5 +1,5 @@
 from utils import error, next_move
-from random import randint
+from random import choice
 from argparse import ArgumentParser
 
 class Generator:
@@ -38,7 +38,7 @@ class Generator:
 	def make_shuffle(self):
 		for i in range(self.shuffle):
 			tab = next_move(self.goal, self.size)
-			self.goal = tab[randint(0, len(tab)-1)]
+			self.goal = choice(tab)
 
 	def pprint(self):
 		print('# This puzzle is ' + ('solvable' if self.solvable else 'unsolvable'))
