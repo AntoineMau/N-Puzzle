@@ -1,4 +1,4 @@
-from utils import error
+from utils import error, next_move
 from npuzzle import Npuzzle
 import heapq
 
@@ -21,9 +21,9 @@ class Queue:
 		while self.opened.pq:
 			elt = self.opened.pop()
 			self.closed.add(elt)
-			length, moves = elt.next_move(self.size)
+			moves = next_move(elt.content, self.size)
 			self.complexity_time += 1
-			self.actual_size += length
+			self.actual_size += len(moves)
 			if self.actual_size > self.complexity_size:
 				self.complexity_size = self.actual_size
 			for s in moves:
