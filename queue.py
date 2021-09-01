@@ -1,6 +1,6 @@
 from utils import error, next_move
-from npuzzle import Npuzzle
 from heapq import heappush, heappop
+from npuzzle import Npuzzle
 
 class Queue:
 	def __init__(self, setting):
@@ -12,13 +12,9 @@ class Queue:
 		self.opened.push(Npuzzle(setting.start, 0, setting, None))
 		self.opened_hash = dict()
 		self.closed = set()
-		if setting.start == setting.goal:
-			self.solution = self.opened.pop()
-		else:
-			self.solution = self.solve(setting)
 
 	def solve(self, setting):
-		while self.opened.pq:
+		while self.opened.tree:
 			elt = self.opened.pop()
 			self.closed.add(elt)
 			moves = next_move(elt.content, self.size)
@@ -62,12 +58,12 @@ class Queue:
 
 class OpenedQueue:
 	def __init__(self):
-		self.pq = list()
+		self.tree = list()
 		self.id = 0
 
-	def push(self, s):
-		heappush(self.pq, (s.cost, self.id, s))
+	def push(self, npuzzle):
+		heappush(self.tree, (npuzzle.cost, self.id, npuzzle))
 		self.id += 1
 
 	def pop(self):
-		return heappop(self.pq)[2]
+		return heappop(self.tree)[2]

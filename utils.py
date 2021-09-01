@@ -6,7 +6,7 @@ def error(index_error):
 		'Under shuffle': 'Error: Number of shuffle must be ≥ 0',
 	}
 	print(list_error[index_error])
-	exit(0)
+	exit(1)
 
 def next_move(data, size):
 	index = data.index(0)
@@ -25,3 +25,16 @@ def next_move(data, size):
 def swap(data, i1, i2):
 	data[i1], data[i2] = data[i2], data[i1]
 	return tuple(data)
+
+def make_goal(size):
+	cycle = {(1, 0): (0, 1), (0, 1): (-1, 0), (-1, 0): (0, -1), (0, -1): (1, 0)}
+	total_size = size**2
+	goal = [0 for i in range(total_size)]
+	x, y, sx, sy = 0, 0, 1, 0
+	for i in range(1, total_size):
+		if (x + sx == size or y + sy == size or goal[x + sx + (y+sy)*size] != 0):
+			sx, sy = cycle[(sx, sy)]
+		goal[x + y*size] = i
+		x += sx
+		y += sy
+	return goal

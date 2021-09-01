@@ -1,7 +1,6 @@
 from re import match, sub, split as rsplit
 from utils import error
 from argparse import ArgumentParser, FileType
-from heuristic import manhattan, hamming, euclidean
 
 class Setting:
 	def __init__(self):
@@ -10,13 +9,8 @@ class Setting:
 		self.start = tuple()
 		self.size = int()
 		self.goal = tuple()
-		self.parser()
-		self.make_goal()
-		self.h = self.choose_heuristic_f()
-		self.cost_f = self.create_cost_f()
-		test = self.is_solvable()
-		if not self.is_solvable():
-			error("Unsolvable")
+		self.h = None
+		self.cost_f = None
 
 	def parser(self):
 		parser = ArgumentParser()
@@ -42,22 +36,6 @@ class Setting:
 		if self.size == 0 or self.size**2 != len(self.start):
 			error("Bad file")
 
-	def make_goal(self):
-		length = self.size**2
-		goal = [-1 for i in range(length)]
-		x, ix, y, iy = 0, 1, 0, 0
-		for cur in range(1, length):
-			goal[x + y*self.size] = cur
-			if x+ix == self.size or x+ix < 0 or (ix != 0 and goal[x + ix + y*self.size] != -1):
-				iy, ix = ix, 0
-			elif y+iy == self.size or y+iy < 0 or (iy != 0 and goal[x + (y+iy)*self.size] != -1):
-				ix, iy = -iy, 0
-			x += ix
-			y += iy
-			if cur == length - 1:
-				goal[x + y*self.size] = 0
-		self.goal = tuple(goal)
-
 	def is_solvable(self):
 		start = list(self.start)
 		permutation = 0
@@ -69,20 +47,5 @@ class Setting:
 			if i_npuzzle != i_goal:
 				start[i_npuzzle], start[i_goal] = start[i_goal], start[i_npuzzle]
 				permutation += 1
-		return permutation%2 == parity0%2
-	
-	def choose_heuristic_f(self):
-		f = {
-			'hamming': (hamming),
-			'manhattan': (manhattan),
-			'euclidean': (euclidean)
-		}
-		return f[self.heuristic]
-
-	def create_cost_f(self):
-		f = {
-			'astar': (lambda g, puzzle: g + self.h(puzzle, self.goal, self.size)),
-			'greedy': (lambda g, puzzle: self.h(puzzle, self.goal, self.size)),
-			'uniform': (lambda g, puzzle: g)
-		}
-		return f[self.algorithm]
+		if permutation%2 != parity0%2:
+			error("Unsolvable")

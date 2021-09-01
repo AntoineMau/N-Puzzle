@@ -1,4 +1,4 @@
-from utils import error, next_move
+from utils import error, next_move, make_goal
 from random import choice
 from argparse import ArgumentParser
 
@@ -23,18 +23,6 @@ class Generator:
 		self.solvable = args.unsolvable
 		self.shuffle = args.shuffle
 
-	def create_goal(self):
-		cycle = {(1, 0): (0, 1), (0, 1): (-1, 0), (-1, 0): (0, -1), (0, -1): (1, 0)}
-		total_size = self.size**2
-		self.goal = [0 for i in range(total_size)]
-		x, y, sx, sy = 0, 0, 1, 0
-		for i in range(1, total_size):
-			if (x + sx == self.size or y + sy == self.size or self.goal[x + sx + (y+sy)*self.size] != 0):
-				sx, sy = cycle[(sx, sy)]
-			self.goal[x + y*self.size] = i
-			x += sx
-			y += sy
-
 	def make_shuffle(self):
 		for i in range(self.shuffle):
 			tab = next_move(self.goal, self.size)
@@ -49,7 +37,7 @@ class Generator:
 def main():
 	generator = Generator()
 	generator.parser()
-	generator.create_goal()
+	generator.goal = make_goal(generator.size)
 	generator.make_shuffle()
 	generator.pprint()
 
