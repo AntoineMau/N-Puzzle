@@ -3,15 +3,14 @@
 from time import time
 from utils import make_goal
 from queue import Queue
-from setting import Setting
-from heuristic import choose_heuristic_f, create_cost_f
+from setting import Setting, choose_heuristic_f, create_cost_f
 
 def main():
 	setting = Setting()
 	setting.parser()
 	setting.goal = tuple(make_goal(setting.size))
 	setting.h = choose_heuristic_f(setting.heuristic)
-	setting.cost_f = create_cost_f(setting.h, setting.goal, setting.size, setting.algorithm)
+	setting.cost_f = create_cost_f(setting)
 	setting.is_solvable()
 	queue = Queue(setting)
 	if setting.start == setting.goal:
