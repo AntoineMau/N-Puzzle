@@ -3,31 +3,29 @@ from math import sqrt
 from utils import error
 from argparse import ArgumentParser, FileType
 
-def hamming(puzzle, goal, size):
+def hamming(puzzle, goal, size, total_size):
 	heuri = 0
-	for i in range(size**2):
+	for i in range(total_size):
 		if puzzle[i] != goal[i]:
 			heuri += 1
 	return heuri
 
-def manhattan(content, goal, size):
+def manhattan(content, goal, size, total_size):
 	heuri = 0
-	for i in range(size**2):
-		obj = goal.index(i)
-		sta = content.index(i)
-		objX, objY = int(obj/size), int(obj%size)
-		staX, staY = int(sta/size), int(sta%size)
+	for i in range(total_size):
+		obj, sta = goal.index(i), content.index(i)
+		objY, staY = obj%size, sta%size
+		objX, staX = (obj-objY)/size, (sta-staY)/size
 		heuri += abs(objX - staX) + abs(objY - staY)
 	return heuri
 
-def euclidean(content, goal, size):
+def euclidean(content, goal, size, total_size):
 	heuri = 0
-	for i in range(size**2):
-		obj = goal.index(i)
-		sta = content.index(i)
-		objX, objY = int(obj/size), int(obj%size)
-		staX, staY = int(sta/size), int(sta%size)
-		heuri += sqrt(abs(objX - staX)**2 + abs(objY - staY)**2)
+	for i in range(total_size):
+		obj, sta = goal.index(i), content.index(i)
+		objY, staY = obj%size, sta%size
+		objX, staX = (obj-objY)/size, (sta-staY)/size
+		heuri += sqrt((objX-staX)**2 + (objY-staY)**2)
 	return round(heuri)
 
 def choose_heuristic_f(heuristic):
@@ -40,8 +38,8 @@ def choose_heuristic_f(heuristic):
 
 def create_cost_f(setting):
 	f = {
-		'astar': (lambda g, puzzle: g + setting.h(puzzle, setting.goal, setting.size)),
-		'greedy': (lambda g, puzzle: setting.h(puzzle, setting.goal, setting.size)),
+		'astar': (lambda g, puzzle: g + setting.h(puzzle, setting.goal, setting.size, setting.total_size)),
+		'greedy': (lambda g, puzzle: setting.h(puzzle, setting.goal, setting.size, setting.total_size)),
 		'uniform': (lambda g, puzzle: g)
 	}
 	return f[setting.algorithm]
@@ -52,6 +50,7 @@ class Setting:
 		self.heuristic = str()
 		self.start = tuple()
 		self.size = int()
+		self.total_size = int()
 		self.goal = tuple()
 		self.h = None
 		self.cost_f = None
@@ -72,12 +71,13 @@ class Setting:
 				pass
 			elif first_line and match(r'^\d+$', elt):
 				self.size = int(elt)
+				self.total_size = self.size**2
 				first_line = False
 			elif not first_line and match(r'^([ \t]*\d+[ \t]*){%d}$' % self.size, elt):
 				self.start += tuple(int(i) for i in rsplit(r'[ \t\n]+', elt.strip()))
 			else:
 				error("Bad file")
-		if self.size == 0 or self.size**2 != len(self.start):
+		if self.size == 0 or self.total_size != len(self.start):
 			error("Bad file")
 
 	def is_solvable(self):

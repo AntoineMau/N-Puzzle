@@ -1,6 +1,7 @@
 #!/bin/bash
 
-file_name='tmp-3-'
+size=3
+file_name='tmp-'$size'-'
 file_exte='.txt'
 algo=('astar' 'greedy' 'uniform')
 heur=('manhattan' 'hamming' 'euclidean')
@@ -11,14 +12,14 @@ CHECK=${GREEN}'\u2714'${NC}
 j=0
 
 printf "Creating n-puzzle files "
-for i in {1..100}
+for i in {1..10}
 do
 	tab[$i-1]=`printf "$file_name%03d$file_exte" "$i"`
 done
 
 for i in ${tab[*]}
 do
-	python3 ../generator.py 3 > $i
+	python3 ../generator.py -s 10000 $size > $i
 done
 printf " ${CHECK}\n"
 

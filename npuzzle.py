@@ -1,7 +1,7 @@
 class Npuzzle:
 	def __init__(self, content, g, setting, parent):
 		self.g = g
-		self.h = setting.h(content, setting.goal, setting.size)
+		self.h = setting.h(content, setting.goal, setting.size, setting.total_size)
 		self.cost = setting.cost_f(g, content)
 		self.parent = parent
 		self.content = content

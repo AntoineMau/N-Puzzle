@@ -5,6 +5,7 @@ from npuzzle import Npuzzle
 class Queue:
 	def __init__(self, setting):
 		self.size = setting.size
+		self.total_size = setting.total_size
 		self.complexity_time = 0
 		self.complexity_size = 0
 		self.opened = OpenedQueue()
@@ -15,17 +16,6 @@ class Queue:
 	def solve(self, setting):
 		while self.opened.tree:
 			elt = self.opened.pop(self)
-			####################################################################
-			# if self.complexity_time > 100000:
-			# 	print(elt.cost)
-			# 	print(elt.h)
-			# 	print(elt.g)
-			# 	for i in range(self.size**2):
-			# 		print('%2s' % elt.content[i], end='')
-			# 		print(' ', end='') if i%self.size != self.size-1 else print('')
-			# 	print()
-			# 	exit(1)
-			####################################################################
 			self.closed.add(elt)
 			moves = next_move(elt.content, self.size)
 			for s in moves:
@@ -60,7 +50,6 @@ class Queue:
 			# 		print(' ', end='') if i%self.size != self.size-1 else print('')
 			########################### SCRIPT PRINT ###########################
 			print('%d;%d;%d;' % (self.complexity_time, self.complexity_size, self.solution.g), end='')
-
 		else:
 			error("Unsolvable")
 
@@ -77,7 +66,4 @@ class OpenedQueue:
 	def pop(self, queue):
 		queue.complexity_size -= 1
 		queue.complexity_time += 1
-		# print('complexity_size: ', queue.complexity_size)
-		# print('complexity_time: ', queue.complexity_time)
-		# print()
 		return heappop(self.tree)[2]
