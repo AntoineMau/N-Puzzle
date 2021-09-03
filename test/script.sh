@@ -4,30 +4,36 @@ file_name='tmp-3-'
 file_exte='.txt'
 algo=('astar' 'greedy' 'uniform')
 heur=('manhattan' 'hamming' 'euclidean')
-i_resul=0
 
-for i in {1..10}
+GREEN='\033[0;32m'
+NC='\033[0m'
+CHECK=${GREEN}'\u2714'${NC}
+j=0
+
+printf "Creating n-puzzle files "
+for i in {1..100}
 do
-	tab[$i-1]="$file_name$i$file_exte"
+	tab[$i-1]=`printf "$file_name%03d$file_exte" "$i"`
 done
 
 for i in ${tab[*]}
 do
 	python3 ../generator.py 3 > $i
 done
+printf " ${CHECK}\n"
 
+printf "\nRunning n-puzzle program\n"
 echo "File name;Algorithm name;Heuristic name;Complexity time;Complexity size;Number of moves;Time" > test.csv
-
 for i in ${tab[*]}
 do
-	printf "%12s\n" "$i"
+	printf "$i"
 	for a in ${algo[*]}
 	do
-		printf "%20s\n" "$a"
 		for h in ${heur[*]}
 		do
-			echo "$i;$a;$h;`python3 ../main.py -F $i -A $a -H $h`" >> test.csv
-			printf "%30s%5s\n" "$h" "DONE"
+			echo "$i;$a;$h;`timeout 10 python3 ../main.py -F $i -A $a -H $h || echo "0;0;0;0"`" >> test.csv
+			printf " ${CHECK}"
 		done
 	done
+	printf "\n"
 done
