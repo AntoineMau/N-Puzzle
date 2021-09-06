@@ -24,7 +24,49 @@ The only move one can do in the N-puzzle is to swap the empty cell with one of i
 neighbors (No diagonals, of course. Imagine you’re sliding a block with a number on it
 towards an empty space).  
   
+## Python Requirements
+**install requirements:** <code>$ python3 -m pip install -r requirements.txt</code>  
+  
 ## Usage
+<pre><code>usage: main.py [-h] [-A {astar,greedy,uniform}]
+               [-H {manhattan,hamming,euclidean}]
+               file
+
+positional arguments:
+  file                  N-puzzle file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -A {astar,greedy,uniform}, --algorithm {astar,greedy,uniform}
+                        Choise algorithm for N-puzzle. Default: astar
+  -H {manhattan,hamming,euclidean}, --heuristic {manhattan,hamming,euclidean}
+                        Choise heuristic for N-puzzle. Default: manhattan</code></pre>  
+  
+## Exemple
+### Normal
+<pre><code>$ ./main.py npuzzle.txt
+Complexity in time: 273
+Complexity in size: 175
+Number of moves: 20
+Solution:
+
+Step 0:
+2 1 6
+4 5 8
+0 7 3
+
+Step 1:
+2 1 6
+4 5 8
+7 0 3
+
+[...]
+
+Step 20:
+1 2 3
+8 0 4
+7 6 5</pre></code>
+  
 ## More info
 **Autor:** [Antoine Mauffret](https://github.com/AntoineMau)  
   

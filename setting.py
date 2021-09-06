@@ -57,7 +57,7 @@ class Setting:
 
 	def parser(self):
 		parser = ArgumentParser()
-		parser.add_argument('-F', '--file', type=FileType('r'), help='N-puzzle file')
+		parser.add_argument('file', type=FileType('r'), help='N-puzzle file')
 		parser.add_argument('-A', '--algorithm', default='astar', choices=['astar', 'greedy', 'uniform'], help='Choise algorithm for N-puzzle. Default: astar')
 		parser.add_argument('-H', '--heuristic', default='manhattan', choices=['manhattan', 'hamming', 'euclidean'], help='Choise heuristic for N-puzzle. Default: manhattan')
 		args = parser.parse_args()
