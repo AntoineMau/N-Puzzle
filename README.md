@@ -6,8 +6,8 @@
   * [Usage](#usage)
   * [Exemple](#exemple)
 * [Solve puzzle](#solve-puzzle)
-  * [Usage](#usage)
-  * [Exemple](#exemple)
+  * [Usage](#usage-1)
+  * [Exemple](#exemple-1)
 * [More info](#more-info)
   
 ## Introduction
