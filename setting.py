@@ -5,23 +5,23 @@ from argparse import ArgumentParser, FileType
 
 def hamming(puzzle, goal, size, total_size):
 	heuri = 0
-	for i in range(total_size):
+	for i in range(1, total_size):
 		if puzzle[i] != goal[i]:
 			heuri += 1
 	return heuri
 
 def manhattan(content, goal, size, total_size):
 	heuri = 0
-	for i in range(total_size):
+	for i in range(1, total_size):
 		obj, sta = goal.index(i), content.index(i)
 		objY, staY = obj%size, sta%size
 		objX, staX = (obj-objY)/size, (sta-staY)/size
-		heuri += abs(objX - staX) + abs(objY - staY)
+		heuri += abs(objX-staX) + abs(objY-staY)
 	return heuri
 
 def euclidean(content, goal, size, total_size):
 	heuri = 0
-	for i in range(total_size):
+	for i in range(1, total_size):
 		obj, sta = goal.index(i), content.index(i)
 		objY, staY = obj%size, sta%size
 		objX, staX = (obj-objY)/size, (sta-staY)/size
@@ -83,8 +83,7 @@ class Setting:
 	def is_solvable(self):
 		start = list(self.start)
 		permutation = 0
-		index0 = start.index(0)
-		goal0 = self.goal.index(0)
+		index0, goal0 = start.index(0), self.goal.index(0)
 		parity0 = abs(int(index0/self.size) - int(goal0/self.size)) + abs(index0%self.size - goal0%self.size)
 		for i in range(1, self.size**2):
 			i_npuzzle, i_goal = start.index(i), self.goal.index(i)
