@@ -1,7 +1,13 @@
 # N-Puzzle
 ## Table of Contents
 * [Introduction](#introduction)
-* [Usage](#usage)
+* [Python Requirements](#python-requirements)
+* [Generate puzzle](#generate-puzzle)
+  * [Usage](#usage)
+  * [Exemple](#exemple)
+* [Solve puzzle](#solve-puzzle)
+  * [Usage](#usage)
+  * [Exemple](#exemple)
 * [More info](#more-info)
   
 ## Introduction
@@ -27,7 +33,28 @@ towards an empty space).
 ## Python Requirements
 **install requirements:** <code>$ python3 -m pip install -r requirements.txt</code>  
   
-## Usage
+## Generate puzzle
+### Usage
+<pre><code>usage: generator.py [-h] [-s SHUFFLE] size
+
+positional arguments:
+  size                  N-puzzle size. Must be ≥ 3
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -s SHUFFLE, --shuffle SHUFFLE
+                        Number of shuffle</code></pre>  
+  
+### Exemple
+<pre><code>$ python3 generator.py 3
+# This puzzle is solvable
+3
+7 5 0
+8 1 6
+2 4 3</code></pre>  
+  
+## Solve puzzle
+### Usage
 <pre><code>usage: main.py [-h] [-A {astar,greedy,uniform}]
                [-H {manhattan,hamming,euclidean}]
                file
@@ -42,9 +69,8 @@ optional arguments:
   -H {manhattan,hamming,euclidean}, --heuristic {manhattan,hamming,euclidean}
                         Choise heuristic for N-puzzle. Default: manhattan</code></pre>  
   
-## Exemple
-### Normal
-<pre><code>$ ./main.py npuzzle.txt
+### Exemple
+<pre><code>$ python3 main.py npuzzle.txt
 Complexity in time: 273
 Complexity in size: 175
 Number of moves: 20
