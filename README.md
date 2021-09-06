@@ -71,24 +71,24 @@ optional arguments:
   
 ### Exemple
 <pre><code>$ python3 main.py npuzzle.txt
-Complexity in time: 273
-Complexity in size: 175
-Number of moves: 20
+Complexity in time: 2936
+Complexity in size: 1734
+Number of moves: 26
 Solution:
 
 Step 0:
-2 1 6
-4 5 8
-0 7 3
+7 5 0
+8 1 6
+2 4 3
 
 Step 1:
-2 1 6
-4 5 8
-7 0 3
+7 0 5
+8 1 6
+2 4 3
 
 [...]
 
-Step 20:
+Step 26:
 1 2 3
 8 0 4
 7 6 5</pre></code>
