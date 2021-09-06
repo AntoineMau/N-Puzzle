@@ -96,4 +96,4 @@ Step 26:
 ## More info
 **Autor:** [Antoine Mauffret](https://github.com/AntoineMau)  
   
-**Subject:** [N-puzzle](https://cdn.intra.42.fr/pdf/pdf/2024/npuzzle.en.pdf)
+**Subject:** [N-puzzle](https://cdn.intra.42.fr/pdf/pdf/17244/en.subject.pdf)
