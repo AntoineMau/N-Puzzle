@@ -10,10 +10,7 @@ def main():
 	setting.cost_f = create_cost_f(setting)
 	setting.is_solvable()
 	queue = Queue(setting)
-	if setting.start == setting.goal:
-		queue.solution = queue.opened.pop()
-	else:
-		queue.solution = queue.solve(setting)
+	queue.solution = queue.opened.pop() if setting.start == setting.goal else queue.solve(setting)
 	queue.final()
 	exit(0)
 
