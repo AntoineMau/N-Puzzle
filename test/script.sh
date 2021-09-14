@@ -32,7 +32,7 @@ do
 	do
 		for h in ${heur[*]}
 		do
-			echo "$i;$a;$h;`timeout 10 python3 ../main.py -F $i -A $a -H $h || echo "0;0;0;0"`" >> test.csv
+			echo "$i;$a;$h;`timeout 10 python3 ../main.py $i -A $a -H $h || echo "0;0;0;0"`" >> test.csv
 			printf " ${CHECK}"
 		done
 	done

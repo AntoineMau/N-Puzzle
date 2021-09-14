@@ -48,6 +48,7 @@ class Setting:
 	def __init__(self):
 		self.algorithm = str()
 		self.heuristic = str()
+		self.script = bool()
 		self.start = tuple()
 		self.size = int()
 		self.total_size = int()
@@ -60,9 +61,11 @@ class Setting:
 		parser.add_argument('file', type=FileType('r'), help='N-puzzle file')
 		parser.add_argument('-A', '--algorithm', default='astar', choices=['astar', 'greedy', 'uniform'], help='Choise algorithm for N-puzzle. Default: astar')
 		parser.add_argument('-H', '--heuristic', default='manhattan', choices=['manhattan', 'hamming', 'euclidean'], help='Choise heuristic for N-puzzle. Default: manhattan')
+		parser.add_argument('-S', '--script', action="store_true", default=False, help='Changes the final print format')
 		args = parser.parse_args()
 		self.algorithm = args.algorithm
 		self.heuristic = args.heuristic
+		self.script = args.script
 		f = args.file.read()
 		f = sub(r'#.*', '', f)
 		first_line = True

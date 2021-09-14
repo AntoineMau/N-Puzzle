@@ -33,17 +33,20 @@ class Queue:
 					self.opened_hash[s.content] = s
 		return None
 
-	def final(self):
+	def final(self, script, time):
 		if self.solution:
-			print("Complexity in time:", self.complexity_time)
-			print("Complexity in size:", self.complexity_size)
-			print("Number of moves:", self.solution.g)
-			print("Solution:")
-			for nb, step in enumerate(self.solution.get_path()):
-				print('\nStep %d:' % nb)
-				for i in range(len(step)):
-					print('%s' % step[i], end='')
-					print(' ', end='') if i%self.size != self.size-1 else print('')
+			if script:
+				print(self.complexity_time, self.complexity_size, self.solution.g, time)
+			else:
+				print("Complexity in time:", self.complexity_time)
+				print("Complexity in size:", self.complexity_size)
+				print("Number of moves:", self.solution.g)
+				print("Solution:")
+				for nb, step in enumerate(self.solution.get_path()):
+					print('\nStep %d:' % nb)
+					for i in range(len(step)):
+						print('%s' % step[i], end='')
+						print(' ', end='') if i%self.size != self.size-1 else print('')
 		else:
 			error("Unsolvable")
 
