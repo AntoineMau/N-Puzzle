@@ -1,4 +1,4 @@
-import os
+from os import system, popen
 from argparse import ArgumentParser
 from statistics import mean
 import matplotlib.pyplot as plt
@@ -41,11 +41,8 @@ class Process:
 		self.file_number = setting.file_number
 		self.algorithm = ['astar', 'greedy', 'uniform']
 		self.heuristic = ['manhattan', 'hamming', 'euclidean']
-		self.result = {'astar': dict(), 'greedy': dict(), 'uniform': dict()}
-		for algo in self.algorithm:
-			self.result[algo] = {'manhattan': dict(), 'euclidean': dict(), 'hamming': dict()}
-			for heuri in self.heuristic:
-				self.result[algo][heuri] = {'complexity_time': list(), 'complexity_size': list(), 'nb_mouves': list(), 'time': list()}
+		self.tab_algo = {'title': list(), 'data': list(), 'labels': ['Heuristic', 'Complex Time', 'Complex Size', 'Nb Mouve', 'Time']}
+		self.tab_heuri = {'title': list(), 'data': list(), 'labels': ['Algorithm', 'Complex Time', 'Complex Size', 'Nb Mouve', 'Time']}
 
 	def make_name(self):
 		lenght = len(str(self.file_number))
@@ -54,53 +51,50 @@ class Process:
 	def make_npuzzle(self):
 		for j, name in enumerate(self.names):
 			self.progress_bar(j, self.file_number, 'generating', '')
-			os.system(f'python3 ../generator.py -s 1000 {self.size} > {name}')
+			system(f'python3 ../generator.py -s 1000 {self.size} > {name}')
 		self.progress_bar(1, 1, 'generating')
 
 	def make_solution(self):
-		total = self.file_number * len(self.algorithm) * len(self.heuristic)
 		i = int()
+		result = dict()
+		total = self.file_number*len(self.algorithm) * len(self.heuristic)
 		for name in self.names:
 			for algo in self.algorithm:
+				result[algo] = dict()
 				for heuri in self.heuristic:
 					self.progress_bar(i, total, f'{name} {algo} {heuri}','')
-					output = os.popen(f'python3 ../main.py -S {name} -A {algo} -H {heuri}').read().split(' ')
-					self.result[algo][heuri]['complexity_time'].append(int(output[0]))
-					self.result[algo][heuri]['complexity_size'].append(int(output[1]))
-					self.result[algo][heuri]['nb_mouves'].append(int(output[2]))
-					self.result[algo][heuri]['time'].append(float(output[3]))
 					i += 1
-		self.progress_bar(1, 1, f'{name} {algo} {heuri}')
+					output = popen(f'python3 ../main.py -S {name} -A {algo} -H {heuri}').read().split(' ')
+					result[algo][heuri] = {'complexity_time': list(), 'complexity_size': list(), 'nb_mouves': list(), 'time': list()}
+					result[algo][heuri]['complexity_time'].append(int(output[0]))
+					result[algo][heuri]['complexity_size'].append(int(output[1]))
+					result[algo][heuri]['nb_mouves'].append(int(output[2]))
+					result[algo][heuri]['time'].append(float(output[3]))
+		self.progress_bar(i, total, f'{name} {algo} {heuri}')
+		for i, algo in enumerate(self.algorithm):
+			self.tab_algo['title'].append(algo)
+			self.tab_algo['data'].append(list())
+			for j, heuri in enumerate(self.heuristic):
+				self.tab_algo['data'][i].append([heuri])
+				for elt in result[algo][heuri]:
+					self.tab_algo['data'][i][j].append(round(mean(result[algo][heuri][elt]), 5))
+		for i, heuri in enumerate(self.heuristic):
+			self.tab_heuri['title'].append(heuri)
+			self.tab_heuri['data'].append(list())
+			for j, algo in enumerate(self.algorithm):
+				self.tab_heuri['data'][i].append([algo])
+				for elt in [result[algo][heuri][elt] for elt in result[algo][heuri]]:
+					self.tab_heuri['data'][i][j].append(round(mean(elt), 5))
 
 	def progress_bar(self, done, total, name, end_car='\n'):
 		print('\r', f'{name:34s}: {done/total*100:3.0f}%' , sep='', end=end_car, flush=True)
 
 	def pprint(self):
 		if self.graph:
-			tab = {'title': list(), 'data': list(), 'labels': ['Heuristics', 'Complexity Time', 'Complexity Size', 'Number of mouves', 'Time']}
-			for i, algo in enumerate(self.algorithm):
-				tab['title'].append(algo)
-				tab['data'].append(list())
-				for j, heuri in enumerate(self.heuristic):
-					tab['data'][i].append([heuri])
-					for elt in self.result[algo][heuri]:
-						tab['data'][i][j].append(round(mean(self.result[algo][heuri][elt]), 5))
-			print(tab['data'])
-			self.exec_graph(tab)
-			####################################################################
-			tab = {'title': list(), 'data': list(), 'labels': ['Algorithms', 'Complexity Time', 'Complexity Size', 'Number of mouves', 'Time']}
-			for i, heuri in enumerate(self.heuristic):
-				tab['title'].append(heuri)
-				tab['data'].append(list())
-				for j, algo in enumerate(self.algorithm):
-					tab['data'][i].append([algo])
-					for elt in self.result[algo][heuri]:
-						tab['data'][i][j].append(self.result[algo][heuri][elt])
-					for k in range(1, 5):
-						tab['data'][i][j][k] = round(mean(tab['data'][i][j][k]), 5)
-			self.exec_graph(tab)
+			self.exec_graph(self.tab_algo)
+			self.exec_graph(self.tab_heuri)
 		else:
-			print('Bonjour')
+			print('Coucou, dsl pas de graph')
 
 	def exec_graph(self, tab):
 		ax = list()
@@ -110,8 +104,6 @@ class Process:
 			elt.axis('tight')
 			elt.axis('off')
 			the_table = elt.table(cellText=tab['data'][i],colLabels=tab['labels'],loc="center")
-			the_table.auto_set_font_size(False)
-			the_table.set_fontsize(12)
 			elt.set_title(tab['title'][i])
 		plt.show()
 
