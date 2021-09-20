@@ -1,7 +1,8 @@
 #!/bin/bash
 
 size=3
-file_name='tmp-'$size'-'
+nb_file=10
+file_name='npuzzle-'$size'-'
 file_exte='.txt'
 algo=('astar' 'greedy' 'uniform')
 heur=('manhattan' 'hamming' 'euclidean')
@@ -9,22 +10,26 @@ heur=('manhattan' 'hamming' 'euclidean')
 GREEN='\033[0;32m'
 NC='\033[0m'
 CHECK=${GREEN}'\u2714'${NC}
-j=0
+
+if [ $1 ]
+then
+	nb_file=$1
+fi
 
 printf "Creating n-puzzle files "
-for i in {1..10}
+for i in $(seq 1 ${nb_file})
 do
 	tab[$i-1]=`printf "$file_name%03d$file_exte" "$i"`
 done
 
 for i in ${tab[*]}
 do
-	python3 ../generator.py -s 10000 $size > $i
+	python3 ../generator.py -s 1000 $size > $i
 done
 printf " ${CHECK}\n"
 
 printf "\nRunning n-puzzle program\n"
-echo "File name;Algorithm name;Heuristic name;Complexity time;Complexity size;Number of moves;Time" > test.csv
+echo "File name;Algorithm name;Heuristic name;Complexity time;Complexity size;Number of moves;Time" > npuzzle.csv
 for i in ${tab[*]}
 do
 	printf "$i"
@@ -32,7 +37,7 @@ do
 	do
 		for h in ${heur[*]}
 		do
-			echo "$i;$a;$h;`timeout 10 python3 ../main.py $i -A $a -H $h || echo "0;0;0;0"`" >> test.csv
+			echo "$i;$a;$h;`timeout 20 python3 ../main.py -S $i -A $a -H $h || echo "0;0;0;0"`" >> npuzzle.csv
 			printf " ${CHECK}"
 		done
 	done
